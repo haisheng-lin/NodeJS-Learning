@@ -7,6 +7,23 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var dishRouter = require('./routes/dishRouter');
+var promotionRouter = require('./routes/promotionRouter');
+var leaderRouter = require('./routes/leaderRouter');
+
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+
+const Dishes = require('./models/dishes');
+
+const url = 'mongodb://localhost:27017/conFusion';
+const connect = mongoose.connect(url, {
+  useMongoClient: true
+});
+
+connect.then((db) => {
+  console.log('Connected correctly to server.');
+}, (err) => { console.log(err); });
 
 var app = express();
 
@@ -24,6 +41,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/dishes', dishRouter);
+app.use('/promotions', promotionRouter);
+app.use('/leaders', leaderRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
