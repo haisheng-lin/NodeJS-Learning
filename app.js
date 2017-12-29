@@ -32,6 +32,21 @@ connect.then((db) => {
 
 var app = express();
 
+// middleware that redirect the unsecure request to secure server
+app.all('*', (req, res, next) => {
+  if(req.secure) { // 如果 request 是 secure，那么 req.secure 会被设置为 true=
+    return next();
+  }
+  else {
+    /**
+     * 307: 
+     * The target resource resides temporarily under a different URI.
+     * The user agent MUST NOT change the request method if it performs an automatic redirection to that URI.
+     */
+    res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
+  }
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
