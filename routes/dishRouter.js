@@ -26,7 +26,7 @@ dishRouter.route('/')
 })
 
 .get(cors.cors, (req, res, next) => {
-    Dishes.find({})
+    Dishes.find(req.query)
     .populate('comments.author')
     .then((dishes) => {
         res.statusCode = 200;
@@ -160,9 +160,14 @@ dishRouter.route('/:dishId/comments')
             dish.comments = dish.comments.concat(req.body);
             dish.save()
             .then((dish) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(dish);
+                Dishes.findById(dish._id)
+                .populate('comments.author') // populate the comment author which we added just now
+                .then((dish) => {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(dish);
+                });
+                
             }, (err) => next(err));
             
         }
@@ -265,9 +270,14 @@ dishRouter.route('/:dishId/comments/:commentId')
 
             dish.save()
             .then((dish) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(dish);
+                Dishes.findById(dish._id)
+                .populate('comments.author')
+                .then((dish) => {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(dish);
+                });
+                
             }, (err) => next(err));
 
         }
@@ -303,9 +313,13 @@ dishRouter.route('/:dishId/comments/:commentId')
             
             dish.save()
             .then((dish) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(dish);
+                Dishes.findById(dish._id)
+                .populate('comments.author')
+                .then((dish) => {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(dish);
+                });
             }, (err) => next(err));
 
         }
