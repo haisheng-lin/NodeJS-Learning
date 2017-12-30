@@ -17,7 +17,7 @@ const commentSchema = new Schema({
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'User', // const User = mongoose.model('User', userSchema); 所以这里是 'User'
         required: true
     }
 }, {

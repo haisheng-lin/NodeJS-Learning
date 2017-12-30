@@ -95,7 +95,7 @@ dishRouter.route('/:dishId')
 .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     Dishes.findByIdAndUpdate(req.params.dishId, {
         $set: req.body
-    }, { new: true})
+    }, { new: true })
     .then((dish) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -298,7 +298,7 @@ dishRouter.route('/:dishId/comments/:commentId')
         var commentAuthor = dish.comments.id(req.params.commentId).author._id;
         var authenticatedUser = req.user._id;
         if(dish != null && dish.comments.id(req.params.commentId) != null) {
-            
+
             dish.comments.id(req.params.commentId).remove();
             
             dish.save()
